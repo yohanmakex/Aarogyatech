@@ -1,18 +1,3 @@
-/*
- * AarogyaTech - AI-powered Mental Health Assistant
- * Main Server File
- * 
- * Copyright (c) 2025 Rajiv Magadum
- * All rights reserved.
- * 
- * This software is proprietary and confidential.
- * Unauthorized copying or distribution is strictly prohibited.
- * 
- * Author: Rajiv Magadum
- * Email: rajiv.magadum@gmail.com
- * Date: 2025
- */
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -39,6 +24,8 @@ const errorHandlingMiddleware = new ErrorHandlingMiddleware();
 const middleware = errorHandlingMiddleware.getMiddleware();
 
 // Initialize analytics middleware
+const analyticsMiddleware = new AnalyticsMiddleware();
+
 
 // Make performance services available to routes
 app.locals.performanceServices = {
@@ -69,46 +56,22 @@ app.use(helmet({
 }));
 
 // CORS configuration
-// Replace the existing CORS configuration section (around lines 32-88) with this:
-
-// Define allowed origins
-const allowedOrigins = [
-  "http://localhost:3000",                    // local dev frontend
-  "http://localhost:3001",                    // alternative local port
-  "https://aarogyatech.onrender.com",         // your deployed frontend
-  "https://your-frontend-domain.com",         // add any other frontend domains
-];
-
-// Add environment variable origins if they exist
-if (process.env.ALLOWED_ORIGINS) {
-  const envOrigins = process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
-  allowedOrigins.push(...envOrigins);
-}
-
-// CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log('CORS check for origin:', origin); // Debug log
+    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'];
     
-    // Allow requests with no origin (like mobile apps, curl requests, or same-origin)
-    if (!origin) {
-      console.log('No origin - allowing request');
-      return callback(null, true);
-    }
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
     
-    // Check if origin is in allowed list
-    if (allowedOrigins.includes(origin)) {
-      console.log('Origin allowed:', origin);
+    if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      console.log('Origin not allowed:', origin, 'Allowed origins:', allowedOrigins);
-      callback(new Error(`CORS: Origin ${origin} is not allowed`));
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  optionsSuccessStatus: 200 // For legacy browser support
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 };
 
 app.use(cors(corsOptions));
