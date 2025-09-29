@@ -1,7 +1,7 @@
 {
-  "name": "mindcare-ai-backend",
+  "name": "aarogyatech-ai-backend",
   "version": "1.0.0",
-  "description": "Backend server for MindCare AI Mental Health Assistant",
+  "description": "AarogyaTech - AI-powered Mental Health Assistant Backend Server for Student Counseling and Support",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -14,11 +14,19 @@
   "keywords": [
     "mental-health",
     "ai",
+    "counseling",
+    "student-support",
+    "healthcare",
     "express",
     "groq",
-    "llama"
+    "llama",
+    "aarogyatech"
   ],
-  "author": "",
+  "author": {
+    "name": "Rajiv Magadum",
+    "email": "rajiv.magadum@gmail.com"
+  },
+  "copyright": "Copyright (c) 2025 Rajiv Magadum. All rights reserved.",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.12.2",
@@ -35,7 +43,8 @@
     "mongoose": "^8.18.2",
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",

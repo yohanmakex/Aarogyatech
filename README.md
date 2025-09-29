@@ -1,95 +1,234 @@
-# MindCare AI Backend
+# 🧠 AarogyaTech - AI-powered Mental Health Assistant
 
-Backend server for the MindCare AI Mental Health Assistant application.
+**A comprehensive AI-driven mental health support platform designed specifically for students**
 
-## Features
+---
 
-- Express.js server with security middleware
-- CORS configuration for frontend integration
-- Rate limiting to prevent abuse
-- Health check endpoints
-- Environment-based configuration
-- Hugging Face API integration ready
+## 📋 Project Overview
 
-## Setup
+AarogyaTech is an innovative mental health platform that combines artificial intelligence with human counseling services to provide comprehensive mental health support for students. The platform features multilingual support (English/Marathi), voice-to-voice AI interactions, professional counseling booking system, and real-time crisis detection.
+
+### 🎯 Key Features
+
+- **AI Voice Assistant**: Natural voice conversations with AI for mental health support
+- **Counseling Booking System**: Complete appointment booking with counselor matching
+- **Mental Health Screening**: Professional-grade screening tools (PHQ-9, GAD-7, GHQ-12)
+- **Crisis Detection**: Real-time identification and intervention for mental health crises
+- **Admin Dashboard**: Comprehensive management interface for counselors and administrators
+- **Multilingual Support**: Full English and Marathi language support
+- **Data Analytics**: Advanced analytics for mental health trends and usage patterns
+
+### 🛠 Technology Stack
+
+- **Backend**: Node.js, Express.js
+- **AI Integration**: Groq API with Llama models
+- **Database**: JSON file storage (easily configurable for MongoDB)
+- **Frontend**: Vanilla JavaScript, HTML5, CSS3
+- **Voice Processing**: Web Speech API, Text-to-Speech
+- **Real-time Features**: WebSocket integration
+- **Security**: JWT authentication, rate limiting, CORS protection
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
+- Node.js (v16 or higher)
+- NPM or Yarn package manager
+- Groq API key (for AI functionality)
 
 ### Installation
 
-1. Install dependencies:
-```bash
-npm install
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd aarogyatech
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Configuration**
+   ```bash
+   cp .env.example .env
+   # Edit .env file with your API keys and configuration
+   ```
+
+4. **Start the server**
+   ```bash
+   # Development mode
+   npm run dev
+   
+   # Production mode
+   npm start
+   ```
+
+5. **Access the application**
+   - Student Interface: http://localhost:3000
+   - Admin Dashboard: http://localhost:3000/admin-dashboard.html
+
+### 🔐 Admin Access
+
+**Demo Credentials:**
+- Administrator: `admin` / `admin123`
+- Counselor: `counselor` / `counselor123`
+
+## 📊 Core Functionality
+
+### Student Features
+- **AI Chat Support**: Voice and text-based mental health conversations
+- **Mental Health Screening**: Self-assessment tools with instant results
+- **Counseling Booking**: Easy appointment scheduling with preferred counselors
+- **Resource Library**: Comprehensive mental health resources and exercises
+- **Peer Support**: Anonymous community support forum
+
+### Admin/Counselor Features
+- **Dashboard Analytics**: Real-time usage and mental health trend analysis
+- **Booking Management**: Complete appointment lifecycle management
+- **User Monitoring**: Live session monitoring with crisis alert system
+- **Report Generation**: Comprehensive reporting and data export
+- **Crisis Response**: Immediate intervention tools for emergency situations
+
+### API Endpoints
+
+#### Booking Management
+```
+POST   /api/booking/appointments     # Create new booking
+GET    /api/booking/appointments     # List all bookings (with filters)
+GET    /api/booking/appointments/:id # Get specific booking
+PUT    /api/booking/appointments/:id/status # Update booking status
+DELETE /api/booking/appointments/:id # Cancel booking
+GET    /api/booking/availability     # Check availability
+GET    /api/booking/stats           # Get booking statistics
 ```
 
-2. Copy environment configuration:
-```bash
-cp .env.example .env
+#### Mental Health Screening
+```
+POST   /api/screening/submit        # Submit screening results
+GET    /api/screening/history       # Get screening history
+GET    /api/screening/analytics     # Get screening analytics
 ```
 
-3. Configure your environment variables in `.env`:
-   - Set your `HUGGINGFACE_API_KEY` (get one from https://huggingface.co/settings/tokens)
-   - Adjust other settings as needed
-
-### Running the Server
-
-Development mode (with auto-restart):
-```bash
-npm run dev
+#### AI Conversation
+```
+POST   /api/conversational-ai/chat  # Send message to AI
+POST   /api/speech-to-text         # Convert speech to text
+POST   /api/text-to-speech         # Convert text to speech
 ```
 
-Production mode:
-```bash
-npm start
+## 📁 Project Structure
+
 ```
-
-### Testing
-
-Run tests:
-```bash
-npm test
-```
-
-## API Endpoints
-
-### Health Check
-- `GET /health` - Server health status
-- `GET /api/status` - API service status
-- `GET /` - Root endpoint with basic info
-
-## Configuration
-
-The server uses environment variables for configuration. See `.env.example` for all available options.
-
-### Key Configuration Options
-
-- `PORT` - Server port (default: 3000)
-- `HUGGINGFACE_API_KEY` - Your Hugging Face API key
-- `ALLOWED_ORIGINS` - Comma-separated list of allowed CORS origins
-- `RATE_LIMIT_WINDOW_MS` - Rate limiting window in milliseconds
-- `RATE_LIMIT_MAX_REQUESTS` - Maximum requests per window
-
-## Security Features
-
-- Helmet.js for security headers
-- CORS protection with configurable origins
-- Rate limiting to prevent abuse
-- Request size limits
-- Input validation and sanitization
-
-## Development
-
-The server is structured for easy extension with additional AI services and endpoints.
-
-### Project Structure
-```
-├── server.js           # Main server file
+aarogyatech/
+├── server.js                    # Main server file
+├── package.json                 # Project configuration
+├── LICENSE                      # MIT License
+├── COPYRIGHT                    # Copyright notice
+├── README.md                    # Project documentation
 ├── config/
-│   └── config.js      # Configuration management
-├── package.json       # Dependencies and scripts
-├── .env.example       # Environment template
-└── README.md         # This file
+│   └── config.js               # Application configuration
+├── routes/
+│   ├── booking.js              # Booking API routes
+│   ├── screening.js            # Mental health screening routes
+│   ├── conversationalAI.js     # AI chat routes
+│   └── ...                     # Other API routes
+├── services/
+│   ├── bookingService.js       # Booking business logic
+│   ├── conversationalAIService.js # AI integration service
+│   └── ...                     # Other services
+├── middleware/
+│   ├── authMiddleware.js       # Authentication middleware
+│   ├── errorHandlingMiddleware.js # Error handling
+│   └── ...                     # Other middleware
+├── public/
+│   ├── index.html              # Student interface
+│   ├── admin-dashboard.html    # Admin interface
+│   ├── styles.css              # Main styles
+│   ├── admin-dashboard.js      # Admin functionality
+│   └── ...                     # Static assets
+└── data/
+    └── bookings.json          # Booking data storage
 ```
+
+## 🎨 User Interface
+
+### Student Interface
+- **Modern Design**: Clean, accessible interface with mental health focus
+- **Voice Integration**: Seamless voice-to-voice interactions
+- **Mobile Responsive**: Optimized for all device types
+- **Multilingual**: Complete English/Marathi language support
+
+### Admin Dashboard
+- **Real-time Analytics**: Live charts and statistics
+- **Comprehensive Management**: Full booking and user management
+- **Crisis Alerts**: Immediate notifications for urgent situations
+- **Export Capabilities**: Data export in multiple formats
+
+## 🔒 Security & Privacy
+
+- **Data Encryption**: All sensitive data encrypted in transit and at rest
+- **Anonymous Options**: Complete anonymity available for sensitive bookings
+- **HIPAA Compliant**: Designed with healthcare privacy standards in mind
+- **Rate Limiting**: API protection against abuse
+- **Input Validation**: Comprehensive input sanitization and validation
+
+## 📈 Analytics & Monitoring
+
+- **Usage Analytics**: Detailed usage patterns and trends
+- **Mental Health Metrics**: Sentiment analysis and crisis detection rates
+- **Performance Monitoring**: Real-time system performance tracking
+- **Custom Reports**: Configurable reporting for different stakeholders
+
+## 🌐 Multilingual Support
+
+- **English**: Complete interface and AI responses
+- **Marathi (मराठी)**: Full localization for regional users
+- **Extensible**: Architecture supports additional languages
+
+## 🤝 Contributing
+
+This is a proprietary project. For contribution guidelines or collaboration opportunities, please contact the author.
+
+## 📞 Support & Contact
+
+For technical support, feature requests, or general inquiries:
+
+**Rajiv Magadum**
+- Email: rajiv.magadum@gmail.com
+- LinkedIn: [Rajiv Magadum](https://linkedin.com/in/rajivmagadum)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Mental health professionals who provided guidance on clinical best practices
+- Students who participated in user testing and feedback sessions
+- Open-source communities for the underlying technologies
+- Groq for providing AI infrastructure
+
+---
+
+## ⚡ Quick Start Commands
+
+```bash
+# Start development server
+npm run dev
+
+# Run tests
+npm test
+
+# Check API models
+npm run check-models
+
+# Test booking functionality
+node test-booking.js
+```
+
+---
+
+**© 2025 Rajiv Magadum. All rights reserved.**
+
+*AarogyaTech is committed to improving student mental health through innovative technology solutions.*

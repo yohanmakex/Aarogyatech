@@ -1,3 +1,18 @@
+/*
+ * AarogyaTech - AI-powered Mental Health Assistant
+ * Main Server File
+ * 
+ * Copyright (c) 2025 Rajiv Magadum
+ * All rights reserved.
+ * 
+ * This software is proprietary and confidential.
+ * Unauthorized copying or distribution is strictly prohibited.
+ * 
+ * Author: Rajiv Magadum
+ * Email: rajiv.magadum@gmail.com
+ * Date: 2025
+ */
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -110,6 +125,9 @@ const textToSpeechRoutes = require('./routes/textToSpeech');
 const authRoutes = require('./routes/auth');
 const analyticsRoutes = require('./routes/analytics');
 const monitoringRoutes = require('./routes/monitoring');
+const screeningRoutes = require('./routes/screening');
+const voiceConversationRoutes = require('./routes/voiceConversation');
+const bookingRoutes = require('./routes/booking');
 const { router: performanceRoutes, initializeServices } = require('./routes/performanceRoutes');
 
 // Initialize performance routes with services
@@ -148,6 +166,27 @@ app.use('/api/monitoring', monitoringRoutes);
 // Performance optimization routes
 app.use('/api/performance', performanceRoutes);
 
+// Mental health screening routes
+app.use('/api/screening', 
+  middleware.handleRateLimit,
+  middleware.handleServiceUnavailable('screening'),
+  screeningRoutes
+);
+
+// Voice conversation routes
+app.use('/api/voice-conversation', 
+  middleware.handleRateLimit,
+  middleware.handleServiceUnavailable('voice-conversation'),
+  voiceConversationRoutes
+);
+
+// Booking routes
+app.use('/api/booking', 
+  middleware.handleRateLimit,
+  middleware.handleServiceUnavailable('booking'),
+  bookingRoutes
+);
+
 // Enhanced health check endpoint with error handling details
 app.get('/health', middleware.healthCheck);
 
@@ -164,7 +203,10 @@ app.get('/api/status', (req, res) => {
     services: {
       server: 'running',
       groq: process.env.GROQ_API_KEY ? 'configured' : 'not_configured',
-      huggingface: 'deprecated'
+      huggingface: 'deprecated',
+      screening: 'operational',
+      voiceConversation: 'operational',
+      booking: 'operational'
     },
     timestamp: new Date().toISOString()
   });
@@ -177,7 +219,10 @@ app.get('/', (req, res) => {
     version: require('./package.json').version,
     endpoints: {
       health: '/health',
-      status: '/api/status'
+      status: '/api/status',
+      screening: '/api/screening',
+      voiceConversation: '/api/voice-conversation',
+      booking: '/api/booking'
     }
   });
 });
