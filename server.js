@@ -10,7 +10,6 @@ const PerformanceOptimizationService = require('./services/performanceOptimizati
 const CachingService = require('./services/cachingService');
 const ApiBatchingService = require('./services/apiBatchingService');
 require('dotenv').config();
-const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 
 const app = express();
