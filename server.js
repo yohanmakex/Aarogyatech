@@ -40,7 +40,10 @@ const middleware = errorHandlingMiddleware.getMiddleware();
 
 // Initialize analytics middleware
 const analyticsMiddleware = new AnalyticsMiddleware();
-
+const allowedOrigins = [
+  "http://localhost:3000",                  // local dev
+  "https://aarogyatech.onrender.com", // your deployed frontend
+];
 // Make performance services available to routes
 app.locals.performanceServices = {
   performanceOptimizer,
