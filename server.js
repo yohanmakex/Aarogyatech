@@ -39,11 +39,7 @@ const errorHandlingMiddleware = new ErrorHandlingMiddleware();
 const middleware = errorHandlingMiddleware.getMiddleware();
 
 // Initialize analytics middleware
-const analyticsMiddleware = new AnalyticsMiddleware();
-const allowedOrigins = [
-  "http://localhost:3000",                  // local dev
-  "https://aarogyatech.onrender.com", // your deployed frontend
-];
+
 // Make performance services available to routes
 app.locals.performanceServices = {
   performanceOptimizer,
@@ -73,22 +69,46 @@ app.use(helmet({
 }));
 
 // CORS configuration
+// Replace the existing CORS configuration section (around lines 32-88) with this:
+
+// Define allowed origins
+const allowedOrigins = [
+  "http://localhost:3000",                    // local dev frontend
+  "http://localhost:3001",                    // alternative local port
+  "https://aarogyatech.onrender.com",         // your deployed frontend
+  "https://your-frontend-domain.com",         // add any other frontend domains
+];
+
+// Add environment variable origins if they exist
+if (process.env.ALLOWED_ORIGINS) {
+  const envOrigins = process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
+  allowedOrigins.push(...envOrigins);
+}
+
+// CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'];
+    console.log('CORS check for origin:', origin); // Debug log
     
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
+    // Allow requests with no origin (like mobile apps, curl requests, or same-origin)
+    if (!origin) {
+      console.log('No origin - allowing request');
+      return callback(null, true);
+    }
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    // Check if origin is in allowed list
+    if (allowedOrigins.includes(origin)) {
+      console.log('Origin allowed:', origin);
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.log('Origin not allowed:', origin, 'Allowed origins:', allowedOrigins);
+      callback(new Error(`CORS: Origin ${origin} is not allowed`));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 200 // For legacy browser support
 };
 
 app.use(cors(corsOptions));
